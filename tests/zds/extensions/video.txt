@@ -7,8 +7,6 @@ Test video
 
 !(http://vimeo.com/133693532)
 
-!(https://screen.yahoo.com/weatherman-gives-forecast-using-taylor-191821481.html)
-
 !(https://youtu.be/BpJKvrjLUp0)
 
 !(http://youtube.com/watch?v=BpJKvrjLUp0)

@@ -15,8 +15,6 @@ class VideoExtension(markdown.Extension):
             'dailymotion_height': ['270', 'Height for Dailymotion videos'],
             'vimeo_width': ['500', 'Width for Vimeo videos'],
             'vimeo_height': ['281', 'Height for Vimeo videos'],
-            'yahoo_width': ['624', 'Width for Yahoo! videos'],
-            'yahoo_height': ['351', 'Height for Yahoo! videos'],
             'youtube_width': ['560', 'Width for Youtube videos'],
             'youtube_height': ['315', 'Height for Youtube videos'],
             'ina_width': ['620', 'Width for INA videos'],
@@ -49,8 +47,6 @@ class VideoExtension(markdown.Extension):
                         r'https?://www\.dailymotion\.com/video/(?P<dailymotionid>[a-z0-9]+)(_[\w\-]*)?')
         self.add_inline(md, 'vimeo', Vimeo,
                         r'https?://(www.|)vimeo\.com/(?P<vimeoid>\d+)\S*')
-        self.add_inline(md, 'yahoo', Yahoo,
-                        r'https?://screen\.yahoo\.com/.+/?')
         self.add_inline(md, 'youtube', Youtube,
                         r'https?://(www\.)?youtube\.com/watch\?\S*v=(?P<youtubeid>\S[^&/]+)'
                         r'(?P<channel>&ab_channel=[\w%]+)?')
