@@ -61,6 +61,8 @@ class VideoExtension(markdown.Extension):
 
 
 class VideoBProcessor(BlockProcessor):
+    responsive = True
+
     def __init__(self, md, patt, width, height):
         BlockProcessor.__init__(self, md.parser)
         self.md = md
@@ -101,17 +103,39 @@ class VideoBProcessor(BlockProcessor):
         url = self.extract_url(m)
         if url is None:
             return None
+
+        if self.responsive:
+            return self.render_responsive_video(url, self.width, self.height)
         return self.render_iframe(url, self.width, self.height)
 
     @staticmethod
     def render_iframe(url, width, height):
+        wrapper = etree.Element('div')
+        wrapper.set('class', 'video-wrapper')
+
         iframe = etree.Element('iframe')
         iframe.set('width', width)
         iframe.set('height', height)
         iframe.set('src', url)
         iframe.set('allowfullscreen', 'true')
         iframe.set('frameborder', '0')
-        return iframe
+
+        wrapper.append(iframe)
+        return wrapper
+
+    @staticmethod
+    def render_responsive_video(url, width, height):
+        ratio = int(height) * 100 / int(width)
+
+        container = etree.Element('div')
+        container.set('class', 'video-container')
+        container.set('style', 'max-width: {0}px; max-height: {1}px;'.format(width, height))
+
+        wrapper = VideoBProcessor.render_iframe(url, width, height)
+        wrapper.set('style', 'padding-bottom: {0}%'.format(ratio))
+
+        container.append(wrapper)
+        return container
 
 
 class Dailymotion(VideoBProcessor):
@@ -139,6 +163,8 @@ class Youtube(VideoBProcessor):
 
 
 class Ina(VideoBProcessor):
+    responsive = False
+
     @staticmethod
     def extract_url(m):
         return 'http://player.ina.fr/player/embed/%s/1/1b0bd203fbcd702f9bc9b10ac3d0fc21/560/315/1/148db8' % m.group(
@@ -146,6 +172,8 @@ class Ina(VideoBProcessor):
 
 
 class JsFiddle(VideoBProcessor):
+    responsive = False
+
     @staticmethod
     def extract_url(m):
         fields = (m.group('jsfiddleuser'), m.group('jsfiddleid'), m.group('jsfiddlerev'))
